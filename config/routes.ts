@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 10:07:56
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-12 17:29:08
+ * @LastEditTime: 2022-07-13 14:07:18
  */
 // component: '@/layouts/BasicLayout',
 // layout: false,(插件layout启用时可禁用)
@@ -41,14 +41,12 @@ const routes = [
         path: "/users/update",
         component: "Users/Update",
         name: "个人中心",
-        layout: false
       },
       {
         title: "管理用户",
         path: "/users/alluser",
         component: "Users/ManageAllUsers",
         name: "管理用户",
-        layout: false
       },
     ]
   },

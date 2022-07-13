@@ -1,26 +1,27 @@
 // 运行时配置
-import { history, Link , RequestConfig } from "@umijs/max";
+import { history, Link, RequestConfig, RunTimeLayoutConfig } from "@umijs/max";
 import { message, notification } from "antd";
+import RightContent from '@/components/RightContent'
+
+
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 
 /*---------------------------------------- getInitialState /*----------------------------------------*/
 export async function getInitialState() {
   const data = {
-    name:"dontHaveAccess"
+    name: "dontHaveAccess"
   };
   return data;
 }
 
 /*---------------------------------------- layout /*----------------------------------------*/
-export const layout = () => {
+export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
-    menu: {
-      locale: false,
-    },
-    layout:()=>{
-      console.log(1)
-    }
+    layout: "mix",
+    rightContentRender: () => <RightContent />,
+    disableContentMargin: false,
+    links: [],
+    logout:()=>{console.log(123)}
   };
 };
 

@@ -3,9 +3,10 @@
  * @Description: desc
  * @Date: 2022-07-11 09:42:26
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-12 17:04:35
+ * @LastEditTime: 2022-07-13 10:39:07
  */
 import { defineConfig } from "@umijs/max";
+import defaultSettings from './defaultSettings';
 import routes from "./routes";
 
 export default defineConfig({
@@ -16,8 +17,10 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: 'title',
-    name: 'Ant Design Pro',
+    // title: 'title',
+    // locale: true,
+    // ...defaultSettings,
+
   },
   routes,
   proxy: {
