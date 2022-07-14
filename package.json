@@ -2,7 +2,7 @@
   "private": true,
   "author": "L5250 <915016964@qq.com>",
   "scripts": {
-    "dev": "cross-env UMI_ENV=prod max dev",
+    "dev": "cross-env UMI_ENV=dev max dev",
     "build": "cross-env UMI_ENV=prod max build",
     "prepare": "husky install",
     "postinstall": "max setup",
