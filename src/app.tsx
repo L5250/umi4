@@ -21,7 +21,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     links: [],
-    logout:()=>{console.log(123)}
+    logout: () => { console.log(123) }
   };
 };
 
@@ -97,7 +97,13 @@ export const request: RequestConfig = {
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error("Response status:" + error.response.status);
+        const { response } = error
+        const { data } = response
+        if (data.message) {
+          message.error(data.message);
+        } else {
+          message.error("Response status:" + error.response.status);
+        }
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -121,7 +127,7 @@ export const request: RequestConfig = {
 
   // 响应拦截器
   responseInterceptors: [
-    (response) => {
+    (response: any) => {
       // 拦截响应数据，进行个性化处理
       const { data }: any = response;
       if (!data.success) {
