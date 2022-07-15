@@ -102,7 +102,7 @@ export const request: RequestConfig = {
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
         const { response } = error
         const { data } = response
-        if (data.message) {
+        if (data && data.message) {
           message.error(data.message);
         } else {
           message.error("Response status:" + error.response.status);

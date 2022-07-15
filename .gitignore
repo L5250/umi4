@@ -11,3 +11,4 @@
 /.mfsu
 pnpm-lock.yaml
 yarn.lock
+yarn-error.log
