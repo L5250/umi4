@@ -21,10 +21,11 @@ const routes = [
     component: "Users/Register",
     layout: false
   },
-  { path: '/home', component: 'Home', name: "首页" },
+  { path: '/home', component: 'Home', name: "首页", icon: "home" },
   {
     path: '/content',
     name: "内容管理",
+    icon: "home",
     routes: [
       { path: '/content/post', component: 'Content/Posts', name: "开启动态" },
       {
@@ -35,12 +36,14 @@ const routes = [
   {
     path: "/users",
     name: "账号管理",
+    icon: "user",
     routes: [
       {
         title: "个人中心",
         path: "/users/update",
         component: "Users/Update",
         name: "个人中心",
+        icon: "question",
       },
       {
         title: "管理用户",

@@ -21,7 +21,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     links: [],
-    logout: () => { console.log(123) }
+    logout: () => { console.log(123) },
+    // loading:true,
+    // onMenuHeaderClick:()=>{console.log(2);},
+    // actionRef:()=>{console.log("actionRef");}
   };
 };
 
