@@ -2,26 +2,53 @@
 import { history, Link, RequestConfig, RunTimeLayoutConfig } from "@umijs/max";
 import { message, notification } from "antd";
 import RightContent from '@/components/RightContent'
+import service from "./services/user";
 
-
+const isDev = process.env.NODE_ENV === 'development';
+const loginPath = '/login';
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 
 /*---------------------------------------- getInitialState /*----------------------------------------*/
 export async function getInitialState() {
-  const data = {
-    name: "dontHaveAccess"
+
+  const fetchUserInfo = async () => {
+    try {
+      const msg = await service.validateToken();
+      console.log(msg);
+      return msg.data;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
   };
-  return data;
+  // 如果不是登录页面，执行
+  console.log(history.location.pathname);
+  console.log(history.location.pathname !== loginPath);
+
+  if (history.location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      fetchUserInfo,
+      currentUser,
+      // settings: defaultSettings,
+    };
+  }
+  return {
+    fetchUserInfo,
+    // settings: defaultSettings,
+  };
 }
 
 /*---------------------------------------- layout /*----------------------------------------*/
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
     layout: "mix",
+    // onCollapse:()=>{console.log(123)},
+    // collapsed:false,
     rightContentRender: () => <RightContent />,
-    disableContentMargin: false,
+    // disableContentMargin: false,
     links: [],
-    logout: () => { console.log(123) },
+    // logout: () => { console.log(123) },
     // loading:true,
     // onMenuHeaderClick:()=>{console.log(2);},
     // actionRef:()=>{console.log("actionRef");}
@@ -49,9 +76,12 @@ interface ResponseStructure {
 
 // 运行时配置
 export const request: RequestConfig = {
+
   // 统一的请求设定
   timeout: 10000,
-  headers: { "X-Requested-With": "XMLHttpRequest" },
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+  },
 
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
@@ -121,11 +151,15 @@ export const request: RequestConfig = {
 
   // 请求拦截器
   requestInterceptors: [
-    // (config) => {
-    //   // 拦截请求配置，进行个性化处理。
-    //   const url = config.url.concat("?token = 123");
-    //   return { ...config, url };
-    // },
+    (config) => {
+      // 拦截请求配置，进行个性化处理。
+      // const url = config.url.concat("?token = 123");
+      // return { ...config, url };
+      console.log(config)
+      let token = window.localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token")}` : undefined
+
+      return { ...config, headers: { ...config.headers, Authorization: token } }
+    },
   ],
 
   // 响应拦截器

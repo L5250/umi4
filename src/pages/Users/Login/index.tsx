@@ -25,12 +25,12 @@ const iconStyles: CSSProperties = {
 
 const loginSubmit: any = async (e: any) => {
     console.log(e);
-    const msg: any = await service.login(e);
-    console.log(msg);
-    // console.log(msg);
-    console.log(msg);
-    if (msg.success) {
+    const { data, success }: any = await service.login(e);
+
+    console.log(data);
+    if (success) {
         console.log(123);
+        localStorage.setItem("token", data.access_token)
         history.push('home')
     }
 }
@@ -38,17 +38,14 @@ const loginSubmit: any = async (e: any) => {
 
 const Login = (props: any) => {
     const [loginType, setLoginType] = useState<LoginType>('phone');
-    // const { loading, getData, userData } = useModel('login');
+
     const { getData } = useModel("login")
-    const { initialState, loading, error, refresh, setInitialState  } = useModel("@@initialState")
-    console.log(initialState, loading, error,   );
-    // console.log(userData);
-    // console.log(loading);
+    const { initialState, loading, error, refresh, setInitialState } = useModel("@@initialState")
+    console.log(initialState, loading, error,);
+
     const getAll = async () => {
-        // const data =await getData.getAllUser()
-        // console.log(data);
-        let w = await getData()
-        console.log(w);
+        let data = await getData()
+        console.log(data);
     }
     useEffect(() => {
     }, [])

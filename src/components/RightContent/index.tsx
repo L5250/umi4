@@ -3,8 +3,9 @@
  * @Description: desc
  * @Date: 2022-07-13 10:48:17
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-13 12:05:02
+ * @LastEditTime: 2022-07-19 14:19:44
  */
+import { history } from '@umijs/max';
 import { Link } from '@umijs/max';
 import { Button, Dropdown, Menu } from 'antd';
 import React from 'react';
@@ -13,31 +14,20 @@ import React from 'react';
 
 const RightContent: React.FC = () => {
 
+    const logout = () => {
+        history.push('/login')
+        localStorage.removeItem('token')
+    }
+
     const menu = (
         <Menu
             items={[
                 {
-                    key: '1',
-                    label: (
-                        <Link to='/login' >
-                            1st menu item
-                        </Link>
-                    ),
-                },
-                {
-                    key: '2',
-                    label: (
-                        <Link to='/login'>
-                            2nd menu item
-                        </Link>
-                    ),
-                },
-                {
                     key: '3',
                     label: (
-                        <Link to='/login' >
+                        <Button onClick={logout}>
                             退出登录
-                        </Link>
+                        </Button>
                     ),
                 },]}
         />
