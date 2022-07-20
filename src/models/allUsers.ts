@@ -3,37 +3,51 @@
  * @Description: desc
  * @Date: 2022-07-11 14:49:51
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-19 16:54:00
+ * @LastEditTime: 2022-07-20 17:23:00
  */
 
 import service from "@/services/user";
 import { useState, useCallback } from "react";
 import { useRequest } from "@umijs/max";
 import { message } from "antd";
+import { useSetState } from 'ahooks'
 
-type T ={
-    id:string,
-    password:string,
-    userName:string,
+interface State {
+  dataSource: [];
+  visible: boolean;
+  formData: any,
+  [key: string]: any;
 }
 
 export default () => {
-  const [allUsersData, setAllUsersData] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [formData, setFormData] = useState<T|null>(null);
+  const [state, setState] = useSetState<State>({
+    dataSource: [],
+    visible: false,
+    formData: null
+  })
+  /**
+   * 获取所有人员
+   * @params
+   */
+  const getDataRequest = useRequest((params?: any) => service.getAllUser(params), {
+    manual: true,
+    onSuccess: (data) => { setState({ dataSource: data }) }
+  })
+  // 新增用户
+  const addUserRequest = useRequest((params?: any) => service.register(params), { manual: true })
+  // 更新信息
+  const updateUserRequest = useRequest((params?: any) => service.updateUser(params), { manual: true })
+  // 删除用户
+  const deleteUserRequest = useRequest((params?: any) => service.deleteUser(params), { manual: true })
 
-  const getData = async () => {
-    const { data} = await service.getAllUser();
-    setAllUsersData(data)
-    return data 
-  }
-
+  const loading = getDataRequest.loading
   return {
-    visible,
-    setVisible,
-    allUsersData,
-    getData,
-    formData,
-    setFormData
+    loading,
+    state,
+    setState,
+    getDataRequest,
+    deleteUserRequest,
+    addUserRequest,
+    updateUserRequest
   };
 };

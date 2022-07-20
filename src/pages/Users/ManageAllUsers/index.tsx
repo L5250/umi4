@@ -3,43 +3,47 @@
  * @Description: desc
  * @Date: 2022-07-12 15:49:32
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-19 17:00:50
+ * @LastEditTime: 2022-07-20 17:03:45
  */
 import React, { useEffect, useState } from 'react'
 import service from '@/services/user'
 import { Table, Layout, TableColumnsType, Button, Modal, Form, Input, Space } from 'antd'
 import { useModel } from '@umijs/max'
 import PopupForm from './components/PopupForm'
+import { useRequest } from '@umijs/max'
 
 const { Content, Header } = Layout
 
 const ManageAllUsers = () => {
-  const { getData, visible, setVisible, allUsersData, setFormData } = useModel("allUsers")
-  const { initialState } = useModel('@@initialState')
-  console.log(initialState);
-
+  const { state: { dataSource }, setState, getDataRequest, deleteUserRequest, loading } = useModel("allUsers")
+  // const { initialState,loading } = useModel('@@initialState')
+  // console.log(initialState,loading);
+  console.log(loading);
   // 删除用户
   const deleteUser = async (record: any) => {
+
     Modal.confirm({
       title: `确认删除用户名：${record.userName}`,
       onOk: async () => {
-        await service.deleteUser({ id: record.id })
-        getData()
+        await deleteUserRequest.run({ id: record.id })
+        await getDataRequest.run()
       }
     })
   }
   // 注册新用户
   const addUser = async () => {
-    setFormData(null)
-    setVisible(true)
+    await getDataRequest.run({ name: 123 })
+    setState({ formData: null, visible: true })
   }
   // 
   const edit = async (params: any) => {
-    setFormData(params)
-    setVisible(true)
+    setState({ formData: params, visible: true })
+
   }
   useEffect(() => {
-    getData()
+    (async function () {
+      await getDataRequest.run()
+    })()
   }, [])
 
   const columns: TableColumnsType<{ a: number }> | undefined = [
@@ -63,8 +67,9 @@ const ManageAllUsers = () => {
       <Header><Button type='primary' onClick={addUser}>注册新用户</Button></Header>
       <Content>
         <Table
+          loading={loading}
           columns={columns}
-          dataSource={allUsersData || []}
+          dataSource={dataSource || []}
           rowKey="id"
         />
       </Content>

@@ -8,16 +8,17 @@ const { Option } = Select
 
 export default function PopupForm() {
 
-    const { visible, setVisible, getData, formData } = useModel("allUsers")
+    const { state: { formData, visible }, setState, updateUserRequest, addUserRequest, getDataRequest } = useModel("allUsers")
     const [form] = Form.useForm();
-    console.log(formData);
     const save = async () => {
         form.validateFields()
             .then(async values => {
-                const data = formData?.id ? await service.updateUser({...formData,...values}) : await service.register(values)
+                const data = formData?.id ? await updateUserRequest.run({ ...formData, ...values }) : await addUserRequest.run(values)
+                // const data = formData?.id ? await service.updateUser({ ...formData, ...values }) : await service.register(values)
+                console.log(data);
                 if (data) {
-                    setVisible(false)
-                    getData()
+                    setState({ visible: false })
+                    getDataRequest.run()
                     form.resetFields();
                 }
             })
@@ -27,14 +28,15 @@ export default function PopupForm() {
     }
 
     useEffect(() => {
-        console.log(1);
+        form.resetFields();
         form.setFieldsValue({ ...formData, password: "" })
     }, [formData])
 
     return (
         <Modal title="新增账号" visible={visible}
-            onCancel={() => setVisible(false)}
+            onCancel={() => setState({ visible: false })}
             forceRender
+            confirmLoading={updateUserRequest.loading || addUserRequest.loading}
             onOk={save}>
             <Form
                 labelCol={{ span: 8 }}

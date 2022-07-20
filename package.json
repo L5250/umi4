@@ -8,12 +8,13 @@
     "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev",
-    "update":"pnpm add @umijs/max@lastest "
+    "update": "pnpm add @umijs/max@lastest "
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^1.1.9",
     "@umijs/max": "^4.0.7",
+    "ahooks": "^3.5.2",
     "antd": "^4.20.7"
   },
   "devDependencies": {

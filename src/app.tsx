@@ -11,40 +11,35 @@ const loginPath = '/login';
 /*---------------------------------------- getInitialState /*----------------------------------------*/
 export async function getInitialState() {
 
-  const fetchUserInfo = async () => {
-    try {
-      const msg = await service.validateToken();
-      console.log(msg);
-      return msg.data;
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
-  };
-  // 如果不是登录页面，执行
-  console.log(history.location.pathname);
-  console.log(history.location.pathname !== loginPath);
-
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      // settings: defaultSettings,
-    };
-  }
-  return {
-    fetchUserInfo,
-    // settings: defaultSettings,
-  };
+  // const fetchUserInfo = async () => {
+  //   try {
+  //     const msg = await service.validateToken();
+  //     return msg.data;
+  //   } catch (error) {
+  //     history.push(loginPath);
+  //   }
+  //   return undefined;
+  // };
+  // // 如果不是登录页面，执行
+  // if (history.location.pathname !== loginPath) {
+  //   const currentUser = await fetchUserInfo();
+  //   return {
+  //     fetchUserInfo,
+  //     currentUser,
+  //     // settings: defaultSettings,
+  //   };
+  // }
+  // return {
+  //   fetchUserInfo,
+  //   // settings: defaultSettings,
+  // };
 }
 
 /*---------------------------------------- layout /*----------------------------------------*/
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+  console.log(initialState);
   return {
     layout: "mix",
-    // onCollapse:()=>{console.log(123)},
-    // collapsed:false,
     rightContentRender: () => <RightContent />,
     // disableContentMargin: false,
     links: [],
@@ -87,7 +82,6 @@ export const request: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res: any) => {
-      console.log(res);
       const { success, data, errorCode, errorMessage, showType } = res;
       if (!success) {
         const error: any = new Error(errorMessage);
@@ -155,7 +149,6 @@ export const request: RequestConfig = {
       // 拦截请求配置，进行个性化处理。
       // const url = config.url.concat("?token = 123");
       // return { ...config, url };
-      console.log(config)
       let token = window.localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token")}` : undefined
 
       return { ...config, headers: { ...config.headers, Authorization: token } }
