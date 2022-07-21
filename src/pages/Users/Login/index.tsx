@@ -24,12 +24,8 @@ const iconStyles: CSSProperties = {
 };
 
 const loginSubmit: any = async (e: any) => {
-    console.log(e);
     const { data, success }: any = await service.login(e);
-
-    console.log(data);
     if (success) {
-        console.log(123);
         localStorage.setItem("token", data.access_token)
         history.push('home')
     }
@@ -38,14 +34,11 @@ const loginSubmit: any = async (e: any) => {
 
 const Login = (props: any) => {
     const [loginType, setLoginType] = useState<LoginType>('phone');
-
     const { getData } = useModel("login")
     const { initialState, loading, error, refresh, setInitialState } = useModel("@@initialState")
-    console.log(initialState, loading, error,);
 
     const getAll = async () => {
         let data = await getData()
-        console.log(data);
     }
     useEffect(() => {
     }, [])
@@ -152,7 +145,7 @@ const Login = (props: any) => {
                     <ProFormText
                         name="userName"
                         fieldProps={{
-                            size: 'large',
+                            // size: 'large',
                             prefix: <UserOutlined className={'prefixIcon'} />,
                         }}
                         placeholder={'用户名: admin or user'}
@@ -166,7 +159,7 @@ const Login = (props: any) => {
                     <ProFormText.Password
                         name="password"
                         fieldProps={{
-                            size: 'large',
+                            // size: 'large',
                             prefix: <LockOutlined className={'prefixIcon'} />,
                         }}
                         placeholder={'密码: ant.design'}

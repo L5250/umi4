@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 09:52:54
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-20 14:27:19
+ * @LastEditTime: 2022-07-21 11:30:46
  */
 // import { request } from "@/utils";
 import { request } from "@umijs/max";
@@ -25,7 +25,6 @@ const service = {
   },
   // 登录
   login(params?: any) {
-    console.log(params);
     return request(`${api}/user/login`, { method: "post", data: params });
   },
   // 注册

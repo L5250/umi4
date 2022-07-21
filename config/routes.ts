@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 10:07:56
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-13 14:07:18
+ * @LastEditTime: 2022-07-21 14:48:33
  */
 // component: '@/layouts/BasicLayout',
 // layout: false,(插件layout启用时可禁用)
@@ -28,35 +28,36 @@ const routes = [
     icon: "home",
     routes: [
       { path: '/content/post', component: 'Content/Posts', name: "开启动态" },
-      {
-        component: './404',
-      },
     ],
   },
+  /**
+   * 个人中心
+   */
   {
-    path: "/users",
+    path: "/account",
     name: "账号管理",
     icon: "user",
     routes: [
       {
         title: "个人中心",
-        path: "/users/update",
-        component: "Users/Update",
+        path: "/account/center",
+        component: "Account/Center",
         name: "个人中心",
         icon: "question",
       },
       {
+        title: "用户设置",
+        path: "/account/setting",
+        component: "Account/Setting",
+        name: "用户设置",
+      },
+      {
         title: "管理用户",
-        path: "/users/alluser",
-        component: "Users/ManageAllUsers",
+        path: "/account/manageAllUsers",
+        component: "Account/ManageAllUsers",
         name: "管理用户",
       },
     ]
-  },
-
-  {
-    path: "/404",
-    component: "/404",
   },
 ];
 export default routes;

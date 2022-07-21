@@ -3,6 +3,7 @@ import { history, Link, RequestConfig, RunTimeLayoutConfig } from "@umijs/max";
 import { message, notification } from "antd";
 import RightContent from '@/components/RightContent'
 import service from "./services/user";
+import defaultSettings from "../config/defaultSettings";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/login';
@@ -11,42 +12,49 @@ const loginPath = '/login';
 /*---------------------------------------- getInitialState /*----------------------------------------*/
 export async function getInitialState() {
 
-  // const fetchUserInfo = async () => {
-  //   try {
-  //     const msg = await service.validateToken();
-  //     return msg.data;
-  //   } catch (error) {
-  //     history.push(loginPath);
-  //   }
-  //   return undefined;
-  // };
-  // // 如果不是登录页面，执行
-  // if (history.location.pathname !== loginPath) {
-  //   const currentUser = await fetchUserInfo();
-  //   return {
-  //     fetchUserInfo,
-  //     currentUser,
-  //     // settings: defaultSettings,
-  //   };
-  // }
-  // return {
-  //   fetchUserInfo,
-  //   // settings: defaultSettings,
-  // };
+  const fetchUserInfo = async () => {
+    try {
+      const msg = await service.validateToken();
+      return msg.data;
+    } catch (error) {
+      history.push(loginPath);
+    }
+    return undefined;
+  };
+  // 如果不是登录页面，执行
+  if (history.location.pathname !== loginPath) {
+    const currentUser = await fetchUserInfo();
+    return {
+      currentUser,
+      settings: defaultSettings,
+    };
+  }
+  return {
+    settings: defaultSettings,
+  };
 }
 
 /*---------------------------------------- layout /*----------------------------------------*/
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-  console.log(initialState);
+
   return {
     layout: "mix",
+    // splitMenus: true,
     rightContentRender: () => <RightContent />,
     // disableContentMargin: false,
     links: [],
-    // logout: () => { console.log(123) },
-    // loading:true,
+    onPageChange: () => {
+      const { location } = history;
+      // 如果没有登录，重定向到 login
+      if (!initialState?.currentUser && location.pathname !== loginPath) {
+        history.push(loginPath);
+      }
+    },
+    loading: !initialState?.currentUser,
     // onMenuHeaderClick:()=>{console.log(2);},
     // actionRef:()=>{console.log("actionRef");}
+    ...initialState?.settings,
+
   };
 };
 

@@ -8,7 +8,7 @@ const { Option } = Select
 
 export default function PopupForm() {
 
-    const { state: { formData, visible }, setState, updateUserRequest, addUserRequest, getDataRequest } = useModel("allUsers")
+    const { state: { formData, visible }, setState, updateUserRequest, addUserRequest, getDataRequest } = useModel("Account.ManageAllUsers.model")
     const [form] = Form.useForm();
     const save = async () => {
         form.validateFields()
@@ -30,12 +30,13 @@ export default function PopupForm() {
     useEffect(() => {
         form.resetFields();
         form.setFieldsValue({ ...formData, password: "" })
-    }, [formData])
+    }, [formData,visible])
 
     return (
         <Modal title="新增账号" visible={visible}
             onCancel={() => setState({ visible: false })}
             forceRender
+            destroyOnClose
             confirmLoading={updateUserRequest.loading || addUserRequest.loading}
             onOk={save}>
             <Form
@@ -103,6 +104,12 @@ export default function PopupForm() {
                 <Form.Item
                     name="telephone"
                     label="手机"
+                    rules={[
+                        {
+                            pattern: /^1\d{10}$/,
+                            message: "手机号格式错误！",
+                        },
+                    ]}
                 >
                     <Input style={{ width: '100%' }} />
                 </Form.Item>

@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-12 15:49:32
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-20 17:03:45
+ * @LastEditTime: 2022-07-21 17:39:07
  */
 import React, { useEffect, useState } from 'react'
 import service from '@/services/user'
@@ -15,10 +15,10 @@ import { useRequest } from '@umijs/max'
 const { Content, Header } = Layout
 
 const ManageAllUsers = () => {
-  const { state: { dataSource }, setState, getDataRequest, deleteUserRequest, loading } = useModel("allUsers")
+  const { state: { dataSource, visible }, setState, getDataRequest, deleteUserRequest, loading, } = useModel("Account.ManageAllUsers.model")
   // const { initialState,loading } = useModel('@@initialState')
   // console.log(initialState,loading);
-  console.log(loading);
+  // console.log(loading);
   // 删除用户
   const deleteUser = async (record: any) => {
 
@@ -32,13 +32,11 @@ const ManageAllUsers = () => {
   }
   // 注册新用户
   const addUser = async () => {
-    await getDataRequest.run({ name: 123 })
     setState({ formData: null, visible: true })
   }
-  // 
+  // 更新用户信息
   const edit = async (params: any) => {
     setState({ formData: params, visible: true })
-
   }
   useEffect(() => {
     (async function () {
@@ -48,12 +46,15 @@ const ManageAllUsers = () => {
 
   const columns: TableColumnsType<{ a: number }> | undefined = [
     { dataIndex: "userName", align: "center", title: "用户名" },
-    { dataIndex: "password", align: "center", title: "密码" },
+    { dataIndex: "password", width: 100, ellipsis: true, align: "center", title: "密码", render: () => "****" },
     { dataIndex: "isAdmin", align: "center", title: "是否管理员", render: (text) => text ? "是" : "否" },
+    { dataIndex: "description", align: "center", title: "描述", },
     {
-      dataIndex: "", title: "操作",
+      dataIndex: "isAdmin",
+      title: "操作",
       align: "center",
       fixed: "right",
+      width: 200,
       render: (text, record) => {
         return <Space>
           <Button type='primary' onClick={() => edit(record)}>编辑</Button>
@@ -71,6 +72,7 @@ const ManageAllUsers = () => {
           columns={columns}
           dataSource={dataSource || []}
           rowKey="id"
+          bordered
         />
       </Content>
       <PopupForm />
