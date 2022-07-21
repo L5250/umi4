@@ -38,7 +38,7 @@ export async function getInitialState() {
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
 
   return {
-    layout: "mix",
+    layout: "top",
     // splitMenus: true,
     rightContentRender: () => <RightContent />,
     // disableContentMargin: false,

@@ -12,7 +12,7 @@ const { Header, Content } = Layout
 
 const BasicLayout = () => {
     return (
-        <Layout >
+        <Layout style={{padding:10}} >
             <Content>
                 <Outlet />
             </Content>

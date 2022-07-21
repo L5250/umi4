@@ -26,6 +26,7 @@ const routes = [
     path: '/content',
     name: "内容管理",
     icon: "home",
+    component:"@/layouts/BasicLayout",
     routes: [
       { path: '/content/post', component: 'Content/Posts', name: "开启动态" },
     ],
@@ -37,6 +38,7 @@ const routes = [
     path: "/account",
     name: "账号管理",
     icon: "user",
+    component:"@/layouts/BasicLayout",
     routes: [
       {
         title: "个人中心",

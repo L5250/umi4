@@ -8,21 +8,26 @@
 import { GridContent } from '@ant-design/pro-components'
 import { useModel } from '@umijs/max'
 import { useRequest } from '@umijs/max'
-import { Avatar, Button, Checkbox, Form, Input, Layout } from 'antd'
+import { Avatar, Button, Checkbox, Form, Input, Layout, Upload } from 'antd'
 import React, { useEffect } from 'react'
 import { saveUserInfo } from './service'
+import styles from './style.less'
+import UploadAvatar from './components/UploadAvatar'
 
 const { Content } = Layout
 
 const Setting: React.FC = () => {
     const [form] = Form.useForm()
     const { initialState, setInitialState }: any = useModel("@@initialState")
-    const saveUserInfoREQ = useRequest((params) => saveUserInfo(params), { manual: true })
+    const { currentUser: { userName, avatarUrlBase64 } } = initialState
+    const { saveUserInfoReq, loading } = useModel("Account.Setting.model")
     console.log(initialState);
     const onFinish = async (values: any) => {
         console.log('Success:', values);
-        const newUserInfo = await saveUserInfoREQ.run({ ...values, id: initialState?.currentUser.id })
-        setInitialState({ ...initialState, currentUser: newUserInfo })
+        const { data } = await saveUserInfoReq.run({ ...values, id: initialState?.currentUser.id })
+        console.log(data);
+        setInitialState({ ...initialState, currentUser: data })
+        setInitialState({ ...initialState, currentUser: { userName: 222 } })
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -38,8 +43,9 @@ const Setting: React.FC = () => {
 
     return (
         <Layout>
-            <Content style={{ width: 500 }}>
-                {/* <Avatar /> */}
+            <Content className={styles.content}>
+                <UploadAvatar />
+                <Avatar size={64}>{avatarUrlBase64 || userName}</Avatar>
                 <Form
                     form={form}
                     name="basic"
@@ -89,7 +95,7 @@ const Setting: React.FC = () => {
                         wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit"
                             style={{ marginTop: 12 }}
-                            loading={saveUserInfoREQ.loading}>
+                            loading={loading}>
                             保存
                         </Button>
                     </Form.Item>
