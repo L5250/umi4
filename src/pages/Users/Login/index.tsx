@@ -23,31 +23,25 @@ const iconStyles: CSSProperties = {
     cursor: 'pointer',
 };
 
-const loginSubmit: any = async (e: any) => {
-    const { data, success }: any = await service.login(e);
-    if (success) {
-        localStorage.setItem("token", data.access_token)
-        history.push('home')
-    }
-}
+
 
 
 const Login = (props: any) => {
     const [loginType, setLoginType] = useState<LoginType>('phone');
-    const { getData } = useModel("login")
-    const { initialState, loading, error, refresh, setInitialState } = useModel("@@initialState")
+    const { loading, loginReq } = useModel("login")
+    const loginSubmit: any = async (e: any) => {
+        const data: any = await loginReq.run(e)
+        console.log(data);
+        console.log(loginReq);
 
-    const getAll = async () => {
-        let data = await getData()
+        setTimeout(() => {
+            history.push('home')
+        }, 100);
+
     }
-    useEffect(() => {
-    }, [])
-
-
 
     return (
         <div style={{ backgroundColor: 'white', height: '100%' }}>
-            <Button onClick={getAll}>获取所有</Button>
             <LoginFormPage
                 onFinish={loginSubmit}
                 backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"

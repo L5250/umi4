@@ -1,8 +1,16 @@
+/*
+ * @Author: L5250
+ * @Description: desc
+ * @Date: 2022-07-22 09:04:58
+ * @LastEditors: L5250
+ * @LastEditTime: 2022-07-28 16:27:24
+ */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar, message, Upload } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
+const { api } = process.env
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -50,17 +58,17 @@ const UploadAvatar: React.FC = () => {
 
   return (
     <Upload
-      name="avatar"
+      name="file"
       listType="picture-card"
-      className="avatar-uploader"
+      className="text-center rounded-full"
       showUploadList={false}
-      // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      action={`${api}/upload/avatar`}
       beforeUpload={beforeUpload}
       onChange={handleChange}
     >
-  {/* <Avatar size={64} > */}
+      {/* <Avatar size={64} > */}
       {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
-    {/* </Avatar> */}
+      {/* </Avatar> */}
     </Upload>
   );
 };

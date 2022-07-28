@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-12 15:49:32
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-21 17:39:07
+ * @LastEditTime: 2022-07-28 11:41:15
  */
 import React, { useEffect, useState } from 'react'
 import service from '@/services/user'
@@ -16,9 +16,6 @@ const { Content, Header } = Layout
 
 const ManageAllUsers = () => {
   const { state: { dataSource, visible }, setState, getDataRequest, deleteUserRequest, loading, } = useModel("Account.ManageAllUsers.model")
-  // const { initialState,loading } = useModel('@@initialState')
-  // console.log(initialState,loading);
-  // console.log(loading);
   // 删除用户
   const deleteUser = async (record: any) => {
 
@@ -40,7 +37,8 @@ const ManageAllUsers = () => {
   }
   useEffect(() => {
     (async function () {
-      await getDataRequest.run()
+      const da = await getDataRequest.run()
+      console.log(da);
     })()
   }, [])
 
@@ -65,7 +63,11 @@ const ManageAllUsers = () => {
   ]
   return (
     <Layout>
-      <Header><Button type='primary' onClick={addUser}>注册新用户</Button></Header>
+      <Header>
+        <div className="text-center">
+          <Button type='primary' onClick={addUser}>注册新用户</Button>
+        </div>
+      </Header>
       <Content>
         <Table
           loading={loading}
@@ -76,7 +78,7 @@ const ManageAllUsers = () => {
         />
       </Content>
       <PopupForm />
-    </Layout>
+    </Layout >
   )
 }
 

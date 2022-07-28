@@ -3,31 +3,33 @@
  * @Description: desc
  * @Date: 2022-07-11 14:49:51
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-20 10:50:23
+ * @LastEditTime: 2022-07-28 11:21:26
  */
 
 import service from "@/services/user";
 import { useState, useCallback } from "react";
 import { useRequest } from "@umijs/max";
 import { message } from "antd";
+import { useModel } from "@umijs/max";
 
 export default () => {
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(false);
-
   // console.log(process)
   // console.log(process.env)
   // console.log(process.env.api)
 
-  const getData = useCallback(async () => {
-    const { data, success ,msg} = await service.getAllUser();
-    if (!success) { message.warn(msg); return }
-    return data 
-  }, [])
+  const { initialState, setInitialState }: any = useModel("@@initialState")
 
+  const loginReq = useRequest((params?: any) => service.login(params), {
+    manual: true,
+    onSuccess: (data) => {
+      setInitialState({ ...initialState, currentUser: data.userInfo })
+      localStorage.setItem("token", data.access_token)
+    }
+  })
+
+  const loading = loginReq.loading
   return {
     loading,
-    userData,
-    getData,
+    loginReq,
   };
 };

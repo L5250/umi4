@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-21 14:36:29
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-21 17:40:00
+ * @LastEditTime: 2022-07-28 17:15:05
  */
 import { GridContent } from '@ant-design/pro-components'
 import { useModel } from '@umijs/max'
@@ -24,10 +24,9 @@ const Setting: React.FC = () => {
     console.log(initialState);
     const onFinish = async (values: any) => {
         console.log('Success:', values);
-        const { data } = await saveUserInfoReq.run({ ...values, id: initialState?.currentUser.id })
+        const data = await saveUserInfoReq.run({ ...values, id: initialState?.currentUser.id })
         console.log(data);
         setInitialState({ ...initialState, currentUser: data })
-        setInitialState({ ...initialState, currentUser: { userName: 222 } })
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -43,7 +42,7 @@ const Setting: React.FC = () => {
 
     return (
         <Layout>
-            <Content className={styles.content}>
+            <Content className='w-[400px] m-auto' >
                 <UploadAvatar />
                 <Avatar size={64}>{avatarUrlBase64 || userName}</Avatar>
                 <Form
