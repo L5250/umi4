@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-22 09:04:58
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-28 16:27:24
+ * @LastEditTime: 2022-08-02 10:49:38
  */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Avatar, message, Upload } from 'antd';
@@ -23,9 +23,9 @@ const beforeUpload = (file: RcFile) => {
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 5;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('Image must smaller than 5MB!');
   }
   return isJpgOrPng && isLt2M;
 };
@@ -33,6 +33,7 @@ const beforeUpload = (file: RcFile) => {
 const UploadAvatar: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
+  const [file, setFile] = useState<string>('');
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'uploading') {
@@ -44,11 +45,16 @@ const UploadAvatar: React.FC = () => {
       getBase64(info.file.originFileObj as RcFile, url => {
         setLoading(false);
         setImageUrl(url);
+        console.log(url)
+        const data = info.file.response
+        console.log(data);
+        if (data.success) {
+          setFile(data.data.url)
+        }
       });
     }
   };
-  console.log(imageUrl);
-  console.log(imageUrl?.length);
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -57,19 +63,25 @@ const UploadAvatar: React.FC = () => {
   );
 
   return (
-    <Upload
-      name="file"
-      listType="picture-card"
-      className="text-center rounded-full"
-      showUploadList={false}
-      action={`${api}/upload/avatar`}
-      beforeUpload={beforeUpload}
-      onChange={handleChange}
-    >
-      {/* <Avatar size={64} > */}
-      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
-      {/* </Avatar> */}
-    </Upload>
+    <>
+      <Upload
+        name="file"
+        listType="picture-card"
+        className="text-center rounded-full"
+        showUploadList={false}
+        action={`${api}/upload/avatar`}
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+      >
+        {/* <Avatar size={64} > */}
+        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
+        {/* </Avatar> */}
+      </Upload>
+      <div>
+        <img src={'https://github.com/L5250/MaterialManagement/blob/main/public/home_bg.png'} alt="avatar" style={{ width: "100%" }} />
+        <img src={file} alt="avatar" style={{ width: "100%" }} />
+      </div>
+    </>
   );
 };
 

@@ -30,14 +30,7 @@ const Login = (props: any) => {
     const [loginType, setLoginType] = useState<LoginType>('phone');
     const { loading, loginReq } = useModel("login")
     const loginSubmit: any = async (e: any) => {
-        const data: any = await loginReq.run(e)
-        console.log(data);
-        console.log(loginReq);
-
-        setTimeout(() => {
-            history.push('home')
-        }, 100);
-
+        await loginReq.run(e)
     }
 
     return (

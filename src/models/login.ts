@@ -10,7 +10,7 @@ import service from "@/services/user";
 import { useState, useCallback } from "react";
 import { useRequest } from "@umijs/max";
 import { message } from "antd";
-import { useModel } from "@umijs/max";
+import { useModel,history } from "@umijs/max";
 
 export default () => {
   // console.log(process)
@@ -24,6 +24,10 @@ export default () => {
     onSuccess: (data) => {
       setInitialState({ ...initialState, currentUser: data.userInfo })
       localStorage.setItem("token", data.access_token)
+      
+      setTimeout(() => {
+        history.push('home')
+    }, 100);
     }
   })
 

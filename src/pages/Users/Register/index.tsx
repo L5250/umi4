@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-06 15:54:03
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-11 14:53:09
+ * @LastEditTime: 2022-08-01 10:35:04
  */
 import {
   AlipayCircleOutlined,
@@ -19,6 +19,7 @@ import { message, Space, Tabs } from 'antd';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
 import service from '@/services/user'
+import { useModel } from '@umijs/max';
 
 type LoginType = 'phone' | 'account';
 
@@ -33,20 +34,24 @@ const iconStyles: CSSProperties = {
 
 export default () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
+  const { registerReq } = useModel("register")
 
   const onFinish = async (e: any) => {
-    const msg: any = await service.register(e)
-    if (msg.success) {
+    const data = await registerReq.run(e)
+    if (data.success) {
       message.success("注册成功")
-    } else {
-
+      await registerReq.run()
     }
   }
   return (
     <div style={{ backgroundColor: 'white' }}>
       <LoginForm
         onFinish={onFinish}
-
+        submitter={{
+          searchConfig: {
+            submitText: '注册',
+          },
+        }}
         logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
         title="Github"
         subTitle="全球最大同性交友网站"
