@@ -3,6 +3,7 @@ import { useModel } from '@umijs/max'
 import { Form, Input, Modal, Select, Checkbox, Radio } from 'antd'
 import React from 'react'
 import { useEffect } from 'react'
+import { getIsMobile } from '@/utils/getBrowser'
 
 const { Option } = Select
 
@@ -10,6 +11,7 @@ export default function PopupForm() {
 
     const { state: { formData, visible }, setState, updateUserRequest, addUserRequest, getDataRequest } = useModel("Account.ManageAllUsers.model")
     const [form] = Form.useForm();
+ 
     const save = async () => {
         form.validateFields()
             .then(async values => {
@@ -30,7 +32,7 @@ export default function PopupForm() {
     useEffect(() => {
         form.resetFields();
         form.setFieldsValue({ ...formData, password: "" })
-    }, [formData,visible])
+    }, [formData, visible])
 
     return (
         <Modal title="新增账号" visible={visible}

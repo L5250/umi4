@@ -15,7 +15,8 @@
     "@ant-design/pro-components": "^1.1.9",
     "@umijs/max": "^4.0.8",
     "ahooks": "^3.5.2",
-    "antd": "^4.21.7"
+    "antd": "^4.21.7",
+    "antd-img-crop": "^4.2.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

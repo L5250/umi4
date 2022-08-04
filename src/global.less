@@ -8,10 +8,15 @@ body {
     background: #eee;
 }
 
-// 解决antd弹框闪出进度条
-.ant-modal-wrap {
-    overflow: hidden !important;
+// 容器大于800时响应
+@media screen and(min-width:800px) {
+
+    // 解决antd弹框闪出进度条
+    .ant-modal-wrap {
+        overflow: hidden !important;
+    }
 }
+
 
 // 解决表单验证时闪烁
 .ant-form-small {
@@ -21,7 +26,9 @@ body {
     }
 }
 
-.ant-form-middle ,.ant-form ,.ant-form-horizontal{
+.ant-form-middle,
+.ant-form,
+.ant-form-horizontal {
     .ant-form-item {
         margin: 0;
         min-height: 3.5rem;

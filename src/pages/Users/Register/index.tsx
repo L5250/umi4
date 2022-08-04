@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-06 15:54:03
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-01 10:35:04
+ * @LastEditTime: 2022-08-04 16:31:52
  */
 import {
   AlipayCircleOutlined,
@@ -34,7 +34,7 @@ const iconStyles: CSSProperties = {
 
 export default () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
-  const { registerReq } = useModel("register")
+  const { registerReq } = useModel("Users.Register.model")
 
   const onFinish = async (e: any) => {
     const data = await registerReq.run(e)

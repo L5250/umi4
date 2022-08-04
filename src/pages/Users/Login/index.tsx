@@ -28,7 +28,7 @@ const iconStyles: CSSProperties = {
 
 const Login = (props: any) => {
     const [loginType, setLoginType] = useState<LoginType>('phone');
-    const { loading, loginReq } = useModel("login")
+    const { loading, loginReq } = useModel("Users.Login.model")
     const loginSubmit: any = async (e: any) => {
         await loginReq.run(e)
     }
