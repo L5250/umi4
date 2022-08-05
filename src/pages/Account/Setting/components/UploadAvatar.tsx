@@ -3,13 +3,15 @@
  * @Description: desc
  * @Date: 2022-07-22 09:04:58
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-02 10:49:38
+ * @LastEditTime: 2022-08-05 17:35:16
  */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { useModel } from '@umijs/max';
 import { Avatar, message, Upload } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useState } from 'react';
+import ImgCrop from 'antd-img-crop';
 const { api } = process.env
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -19,6 +21,7 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 };
 
 const beforeUpload = (file: RcFile) => {
+  console.log(file)
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
@@ -32,8 +35,7 @@ const beforeUpload = (file: RcFile) => {
 
 const UploadAvatar: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
-  const [file, setFile] = useState<string>('');
+  const { initialState, refresh } = useModel("@@initialState")
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'uploading') {
@@ -41,16 +43,11 @@ const UploadAvatar: React.FC = () => {
       return;
     }
     if (info.file.status === 'done') {
+      refresh()
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, url => {
         setLoading(false);
-        setImageUrl(url);
         console.log(url)
-        const data = info.file.response
-        console.log(data);
-        if (data.success) {
-          setFile(data.data.url)
-        }
       });
     }
   };
@@ -61,26 +58,50 @@ const UploadAvatar: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-
+  // 上传前裁剪
+  const onPreview = async (file: UploadFile) => {
+    console.log(file)
+    let src = file.url as string;
+    if (!src) {
+      src = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj as RcFile);
+        reader.onload = () => resolve(reader.result as string);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
   return (
     <>
-      <Upload
-        name="file"
-        listType="picture-card"
-        className="text-center rounded-full"
-        showUploadList={false}
-        action={`${api}/upload/avatar`}
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
+      <ImgCrop
+        // grid
+        shape="round"
+      // rotate
       >
-        {/* <Avatar size={64} > */}
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
-        {/* </Avatar> */}
-      </Upload>
-      <div>
-        <img src={'https://github.com/L5250/MaterialManagement/blob/main/public/home_bg.png'} alt="avatar" style={{ width: "100%" }} />
-        <img src={file} alt="avatar" style={{ width: "100%" }} />
-      </div>
+        <Upload
+          name="file"
+          listType="picture-card"
+          className="avatar-uploader text-center"
+          showUploadList={false}
+          action={`${api}/ftpupload/avatar`}
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+          onPreview={onPreview}
+          data={{ id: initialState?.currentUser.id }}
+
+          // customRequest={({file})=>{
+          //   console.log(file)
+          // }}
+        >
+          {initialState?.currentUser.avatarUrl ? <img src={initialState?.currentUser.avatarUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
+        </Upload>
+      </ImgCrop>
+      {/* <div>
+        <img src={initialState?.currentUser.avatarUrl} alt="avatar" style={{ width: "100%" }} />
+      </div> */}
     </>
   );
 };

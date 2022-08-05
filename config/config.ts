@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 09:42:26
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-28 11:26:34
+ * @LastEditTime: 2022-08-04 15:44:43
  */
 import { defineConfig } from "@umijs/max";
 import defaultSettings from "./defaultSettings";

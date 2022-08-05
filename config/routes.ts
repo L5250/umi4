@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 10:07:56
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-21 14:48:33
+ * @LastEditTime: 2022-08-04 16:34:42
  */
 // component: '@/layouts/BasicLayout',
 // layout: false,(插件layout启用时可禁用)
@@ -53,11 +53,14 @@ const routes = [
         component: "Account/Setting",
         name: "用户设置",
       },
+      // 管理所有用户
+      // admin可编辑
       {
         title: "管理用户",
         path: "/account/manageAllUsers",
         component: "Account/ManageAllUsers",
         name: "管理用户",
+        access:"isAdmin",
       },
     ]
   },

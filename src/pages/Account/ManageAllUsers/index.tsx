@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-12 15:49:32
  * @LastEditors: L5250
- * @LastEditTime: 2022-07-28 11:41:15
+ * @LastEditTime: 2022-08-04 16:21:44
  */
 import React, { useEffect, useState } from 'react'
 import service from '@/services/user'
@@ -11,11 +11,14 @@ import { Table, Layout, TableColumnsType, Button, Modal, Form, Input, Space } fr
 import { useModel } from '@umijs/max'
 import PopupForm from './components/PopupForm'
 import { useRequest } from '@umijs/max'
+import { getIsMobile } from '@/utils/getBrowser'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const { Content, Header } = Layout
 
 const ManageAllUsers = () => {
   const { state: { dataSource, visible }, setState, getDataRequest, deleteUserRequest, loading, } = useModel("Account.ManageAllUsers.model")
+  const isMobile = getIsMobile()
   // 删除用户
   const deleteUser = async (record: any) => {
 
@@ -52,12 +55,21 @@ const ManageAllUsers = () => {
       title: "操作",
       align: "center",
       fixed: "right",
-      width: 200,
+      width: isMobile ? 100 : 200,
       render: (text, record) => {
-        return <Space>
-          <Button type='primary' onClick={() => edit(record)}>编辑</Button>
-          <Button onClick={() => deleteUser(record)}>删除</Button>
-        </Space>
+        return <>
+          {isMobile ?
+            <Space>
+              <Button type='primary' onClick={() => edit(record)} title="编辑" icon={<EditOutlined />} />
+              <Button onClick={() => deleteUser(record)} title="删除" icon={<DeleteOutlined />} />
+            </Space>
+            :
+            <Space>
+              <Button type='primary' onClick={() => edit(record)}>编辑</Button>
+              <Button onClick={() => deleteUser(record)}>删除</Button>
+            </Space>
+          }
+        </>
       }
     },
   ]
@@ -75,6 +87,7 @@ const ManageAllUsers = () => {
           dataSource={dataSource || []}
           rowKey="id"
           bordered
+          scroll={{ x: 800 }}
         />
       </Content>
       <PopupForm />
