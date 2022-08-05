@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-22 09:04:58
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-04 15:32:22
+ * @LastEditTime: 2022-08-05 17:35:16
  */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -21,6 +21,7 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 };
 
 const beforeUpload = (file: RcFile) => {
+  console.log(file)
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
@@ -57,6 +58,7 @@ const UploadAvatar: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+  // 上传前裁剪
   const onPreview = async (file: UploadFile) => {
     console.log(file)
     let src = file.url as string;
@@ -84,11 +86,15 @@ const UploadAvatar: React.FC = () => {
           listType="picture-card"
           className="avatar-uploader text-center"
           showUploadList={false}
-          action={`${api}/upload/avatar`}
+          action={`${api}/ftpupload/avatar`}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           onPreview={onPreview}
           data={{ id: initialState?.currentUser.id }}
+
+          // customRequest={({file})=>{
+          //   console.log(file)
+          // }}
         >
           {initialState?.currentUser.avatarUrl ? <img src={initialState?.currentUser.avatarUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
         </Upload>
