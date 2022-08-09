@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-21 14:36:29
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-04 15:24:38
+ * @LastEditTime: 2022-08-09 17:09:50
  */
 import { GridContent } from '@ant-design/pro-components'
 import { useModel } from '@umijs/max'
@@ -42,7 +42,7 @@ const Setting: React.FC = () => {
 
     return (
         <Layout>
-            <Content className='w-[400px] m-auto' >
+            <Content className='w-auto m-auto' >
                 <UploadAvatar />
                 <Form
                     form={form}

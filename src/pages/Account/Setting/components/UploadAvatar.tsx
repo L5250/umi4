@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-22 09:04:58
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-05 17:35:16
+ * @LastEditTime: 2022-08-09 16:58:56
  */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -21,7 +21,6 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 };
 
 const beforeUpload = (file: RcFile) => {
-  console.log(file)
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
@@ -30,26 +29,32 @@ const beforeUpload = (file: RcFile) => {
   if (!isLt2M) {
     message.error('Image must smaller than 5MB!');
   }
+  console.log(file)
   return isJpgOrPng && isLt2M;
 };
 
 const UploadAvatar: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { initialState, refresh } = useModel("@@initialState")
+  const { uploadAvatarReq } = useModel("Account.Setting.model")
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    console.log(info)
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
-      refresh()
+      setTimeout(() => {
+        refresh()
+      }, 3000);
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, url => {
         setLoading(false);
-        console.log(url)
       });
     }
+
+    return
   };
 
   const uploadButton = (
@@ -86,14 +91,22 @@ const UploadAvatar: React.FC = () => {
           listType="picture-card"
           className="avatar-uploader text-center"
           showUploadList={false}
-          action={`${api}/ftpupload/avatar`}
+          action={`${api}/qnuploads/avatar`}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           onPreview={onPreview}
           data={{ id: initialState?.currentUser.id }}
 
-          // customRequest={({file})=>{
-          //   console.log(file)
+          // customRequest={async (options) => {
+          //   console.log(options);
+          //   let params = new FormData();
+          //   params.append("file", options.file);
+          //   // this.props.ajax.post(`/admin/sys-file/upload`, params, { headers: { 'Content-Type': 'multipart/form-data' } }).then((res) => {
+
+          //   options.onSuccess(true, options.file);
+          //   // })
+          //   return
+          //   // await uploadAvatarReq.run({ ...data, file })
           // }}
         >
           {initialState?.currentUser.avatarUrl ? <img src={initialState?.currentUser.avatarUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
