@@ -38,6 +38,8 @@ const UploadAvatar: React.FC = () => {
   const { initialState, refresh } = useModel("@@initialState")
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    console.log(info.file.status);
+
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
@@ -47,7 +49,6 @@ const UploadAvatar: React.FC = () => {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, url => {
         setLoading(false);
-        console.log(url)
       });
     }
   };
@@ -86,15 +87,15 @@ const UploadAvatar: React.FC = () => {
           listType="picture-card"
           className="avatar-uploader text-center"
           showUploadList={false}
-          action={`${api}/ftpupload/avatar`}
+          action={`${api}/qnuploads/avatar`}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           onPreview={onPreview}
           data={{ id: initialState?.currentUser.id }}
 
-          // customRequest={({file})=>{
-          //   console.log(file)
-          // }}
+        // customRequest={({file})=>{
+        //   console.log(file)
+        // }}
         >
           {initialState?.currentUser.avatarUrl ? <img src={initialState?.currentUser.avatarUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
         </Upload>

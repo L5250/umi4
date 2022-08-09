@@ -42,7 +42,7 @@ const Setting: React.FC = () => {
 
     return (
         <Layout>
-            <Content className='w-[400px] m-auto' >
+            <Content className=' w-full max-w-md m-auto' >
                 <UploadAvatar />
                 <Form
                     form={form}
