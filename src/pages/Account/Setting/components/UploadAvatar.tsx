@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-22 09:04:58
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-10 15:58:17
+ * @LastEditTime: 2022-08-12 15:31:52
  */
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
@@ -81,7 +81,7 @@ const UploadAvatar: React.FC = () => {
       <ImgCrop
         // grid
         shape="round"
-      // rotate
+        rotate
       >
         <Upload
           name="file"

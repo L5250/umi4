@@ -35,8 +35,10 @@ export async function getInitialState() {
 }
 
 /*---------------------------------------- layout /*----------------------------------------*/
-export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-
+export const layout: RunTimeLayoutConfig = (e) => {
+  const {initialState,loading} =e
+  console.log(e);
+  console.log(loading);
   return {
     layout: "top",
     // splitMenus: true,
@@ -52,7 +54,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         }
       }
     },
-    loading: !initialState?.currentUser,
+    loading: loading,
     // onMenuHeaderClick:()=>{console.log(2);},
     // actionRef:()=>{console.log("actionRef");}
     ...initialState?.settings,

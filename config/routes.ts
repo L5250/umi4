@@ -3,7 +3,7 @@
  * @Description: desc
  * @Date: 2022-07-11 10:07:56
  * @LastEditors: L5250
- * @LastEditTime: 2022-08-04 16:34:42
+ * @LastEditTime: 2022-08-12 16:44:27
  */
 // component: '@/layouts/BasicLayout',
 // layout: false,(插件layout启用时可禁用)
@@ -26,11 +26,14 @@ const routes = [
     path: '/content',
     name: "内容管理",
     icon: "home",
-    component:"@/layouts/BasicLayout",
+    component: "@/layouts/BasicLayout",
     routes: [
-      { path: '/content/post', component: 'Content/Posts', name: "开启动态" },
+      { path: '/content/createpostsy', component: 'Content/CreatePosts', name: "开启动态" },
     ],
   },
+  // 查看发布的动态
+  { path: '/posts/:postId', component: 'Content/Posts', name: "开启动态", layout: false },
+
   /**
    * 个人中心
    */
@@ -38,7 +41,7 @@ const routes = [
     path: "/account",
     name: "账号管理",
     icon: "user",
-    component:"@/layouts/BasicLayout",
+    component: "@/layouts/BasicLayout",
     routes: [
       {
         title: "个人中心",
@@ -60,7 +63,7 @@ const routes = [
         path: "/account/manageAllUsers",
         component: "Account/ManageAllUsers",
         name: "管理用户",
-        access:"isAdmin",
+        access: "isAdmin",
       },
     ]
   },
